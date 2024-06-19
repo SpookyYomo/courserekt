@@ -4,10 +4,12 @@ from typing import Any, Union
 from pathlib import Path
 
 from flask import Flask, Response, render_template, request, send_from_directory
+from flask_frozen import Freezer
 
 from src.history.api import INF, get_all_data, get_pdf_filepath, pdf_exists, get_latest_year_and_sem_with_data   # noqa: E501
 
 app = Flask(__name__)
+freezer = Freezer(app)
 BASE_DIR = Path(__file__).resolve().parent
 
 
@@ -107,3 +109,5 @@ def main() -> None:
     args = parser.parse_args()
 
     app.run(host="0.0.0.0", port=args.port, debug=True)
+    freezer = Freezer(app)
+    freezer.freeze()
