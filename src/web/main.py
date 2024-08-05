@@ -3,7 +3,7 @@ from argparse import ArgumentParser
 import logging
 
 from src.web.app import app
-from src.web.precomp import generate_pages
+from src.web.precomp import clean_pages, generate_pages
 
 
 def main() -> None:
@@ -19,7 +19,15 @@ def main() -> None:
                         help="Port where the app is run.")
     parser.add_argument("-s", "--skip-precompute", action="store_true",
                         help="Use existing static pages instead of re-computing them.")
+    parser.add_argument("-c", "--clean", action="store_true",
+                        help="Cleans prior generated pages prior to running app.")
     args = parser.parse_args()
+
+    if args.clean:
+        clean_pages()
+    if args.clean and args.skip_precompute:
+        logger.warning("Cleaned pages but not rebuilding! Consider not using "
+                       "--skip-precompute with --clean!")
 
     if not args.skip_precompute:
         generate_pages()

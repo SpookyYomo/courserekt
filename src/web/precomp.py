@@ -6,6 +6,15 @@ import shutil
 from src.web.app import app
 
 
+def clean_pages() -> None:
+    """Tries deleting all generated pages."""
+    try:
+        shutil.rmtree("src/web/static/pages")
+        logger.debug("Removed src/web/static/pages")
+    except FileNotFoundError:
+        logger.debug("src/web/static/pages not found and hence not removed.")
+
+
 def generate_pages() -> None:
     years = ["2122", "2223", "2324", "2425"]
     semesters = ["1", "2"]
@@ -13,11 +22,7 @@ def generate_pages() -> None:
 
     combinations = itertools.product(years, semesters, student_types)
 
-    try:
-        shutil.rmtree("src/web/static/pages")
-    except FileNotFoundError:
-        pass
-
+    logger.info("Generating all pages...")
     for year, semester, student_type in combinations:
         generate_html(year, semester, student_type)
 
