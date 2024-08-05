@@ -1,3 +1,4 @@
+from . import logger
 import itertools
 import os
 import shutil

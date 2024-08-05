@@ -1,10 +1,19 @@
+from .. import CustomFormatter
 from argparse import ArgumentParser
+import logging
 
 from src.web.app import app
 from src.web.precomp import generate_pages
 
 
 def main() -> None:
+    logger = logging.getLogger()
+    logger.setLevel(logging.DEBUG)
+    streamhandler = logging.StreamHandler()
+    streamhandler.setLevel(logging.INFO)
+    streamhandler.setFormatter(CustomFormatter())
+    logger.addHandler(streamhandler)
+
     parser = ArgumentParser(description="Web app for CourseRekt")
     parser.add_argument("-p", "--port", type=int, default=5000,
                         help="Port where the app is run.")
